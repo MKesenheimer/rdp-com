@@ -2,24 +2,40 @@
 
 Function Write-Bit {
 	param($bit)
-	#$bit = 7
+	#$bit = "a"
 	# Write-Host $bit -NoNewLine
 	if ($bit -eq '0')
-		{Write-Host " " -NoNewLine -BackgroundColor Black} # (0, 0, 0)
-	if ($bit -eq '1')
-		{Write-Host " " -NoNewLine -BackgroundColor Red} # (0, 0, 1)
-	if ($bit -eq '2')
-		{Write-Host " " -NoNewLine -BackgroundColor Green}  # (0, 1, 0)
-	if ($bit -eq '3')
-		{Write-Host " " -NoNewLine -BackgroundColor Yellow} # (0, 1, 1)
-	if ($bit -eq '4')
-		{Write-Host " " -NoNewLine -BackgroundColor Blue} # (1, 0, 0)
-	if ($bit -eq '5')
-		{Write-Host " " -NoNewLine -BackgroundColor Magenta}  # (1, 0, 1)
-	if ($bit -eq '6')
-		{Write-Host " " -NoNewLine -BackgroundColor Cyan} # (1, 1, 0)
-	if ($bit -eq '7')
-		{Write-Host " " -NoNewLine -BackgroundColor White} # (1, 1, 1)
+		{Write-Host " " -NoNewLine -BackgroundColor Black}
+	elseif ($bit -eq '1')
+		{Write-Host " " -NoNewLine -BackgroundColor Red}
+	elseif ($bit -eq '2')
+		{Write-Host " " -NoNewLine -BackgroundColor Green}
+	elseif ($bit -eq '3')
+		{Write-Host " " -NoNewLine -BackgroundColor Yellow}
+	elseif ($bit -eq '4')
+		{Write-Host " " -NoNewLine -BackgroundColor Blue}
+	elseif ($bit -eq '5')
+		{Write-Host " " -NoNewLine -BackgroundColor Magenta}
+	elseif ($bit -eq '6')
+		{Write-Host " " -NoNewLine -BackgroundColor Cyan}
+	elseif ($bit -eq '7')
+		{Write-Host " " -NoNewLine -BackgroundColor White}
+	elseif ($bit -eq '8')
+		{Write-Host " " -NoNewLine -BackgroundColor DarkGray}
+	elseif ($bit -eq '9')
+		{Write-Host " " -NoNewLine -BackgroundColor DarkRed}
+	elseif ($bit -eq 'a')
+		{Write-Host " " -NoNewLine -BackgroundColor DarkGreen}
+	elseif ($bit -eq 'b')
+		{Write-Host " " -NoNewLine -BackgroundColor DarkYellow}
+	elseif ($bit -eq 'c')
+		{Write-Host " " -NoNewLine -BackgroundColor DarkBlue}
+	elseif ($bit -eq 'd')
+		{Write-Host " " -NoNewLine -BackgroundColor DarkMagenta}
+	elseif ($bit -eq 'e')
+		{Write-Host " " -NoNewLine -BackgroundColor DarkCyan}
+	elseif ($bit -eq 'f')
+		{Write-Host " " -NoNewLine -BackgroundColor Gray}
 }
 
 Function Write-Byte {
@@ -40,8 +56,7 @@ Function RDP-Com {
 		# Write-Host $Path
 		$content = [convert]::ToBase64String((Get-Content -path $Path -Encoding byte))
 		# convert character string to value string in base 8
-		#$content = "a"
-		$binary  = [System.Text.Encoding]::Default.GetBytes($content) | %{[convert]::ToString($_,8).PadLeft(3,'0')}
+		$binary  = [System.Text.Encoding]::Default.GetBytes($content) | %{[convert]::ToString($_,16).PadLeft(2,'0')}
 	}
 
 	Process {
@@ -66,12 +81,12 @@ Function RDP-Com {
 		#Start-Sleep -Milliseconds $delay
 			
 		Foreach($byte in $binary2.split()) {
-			Write-Byte -byte $byte.PadRight(3 * $pack, '0')
+			Write-Byte -byte $byte.PadRight(2 * $pack, '0')
 			# Clock-bit on
 			Write-Host " " -BackgroundColor Black
 			Start-Sleep -Milliseconds $delay
 			
-			Write-Byte -byte $byte.PadRight(3 * $pack, '0')
+			Write-Byte -byte $byte.PadRight(2 * $pack, '0')
 			# Clock-bit on
 			Write-Host " " -BackgroundColor White
 			Start-Sleep -Milliseconds $delay

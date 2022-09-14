@@ -9,6 +9,24 @@ import sys
 import os
 import base64
 
+Black = [0, 0, 0, 255]
+Red = [0, 0, 255, 255]
+Green = [0, 255, 0, 255]
+Yellow = [0, 255, 255, 255]
+Blue = [255, 0, 0, 255]
+Magenta = [255, 0, 255, 255]
+Cyan = [255, 255, 0, 255]
+White = [255, 255, 255, 255]
+DarkGray = [128, 128, 128, 255]
+DarkRed =  [0, 0, 128, 255]
+DarkGreen =  [0, 128, 0, 255]
+DarkYellow = [240, 240, 240, 255]
+DarkBlue = [128, 0, 0, 255]
+DarkMagenta = [85, 37, 0, 255]
+DarkCyan =  [128, 128, 0, 255]
+Gray = [192, 192, 192, 255]
+Colors = [Black, Red, Green, Yellow, Blue, Magenta, Cyan, White, DarkGray, DarkRed, DarkGreen, DarkYellow, DarkBlue, DarkMagenta, DarkCyan, Gray]
+
 def average(lst):
     return sum(lst) / len(lst)
 
@@ -16,25 +34,34 @@ def frombits(bits, nbits = 8):
     chars = []
     for b in range(int(len(bits) / nbits)):
         byte = bits[b * nbits : (b + 1) * nbits]
-        chars.append(chr(int(''.join([str(bit) for bit in byte]), 8)))
-        #print(chars)
+        chars.append(chr(int(''.join([str(bit) for bit in byte]), 16)))
     return ''.join(chars)
 
-def inRange(x, lower, upper):
-    if x >= lower and x < upper:
-        return 0
-    else:
+def inRange(x):
+    if x > 170 and x <= 255:
         return 1
+    else:
+        return 0
 
 def colorToBit(color):
-    values = [inRange(x, 0, 127) for x in color]
-    #print(values)
+    values = [inRange(x) for x in color]
     return values[2] + values[1] * 2 + values[0] * 4
+
+def distance(l1, l2):
+    return np.linalg.norm(l1 - l2)
+
+def colorToBit2(color):
+    d = []
+    for c in Colors:
+        d += [distance(color, c)]
+    argmin = np.argmin(d)
+    argmin = "{0:x}".format(argmin)
+    return argmin
 
 # main program
 def main():
-    pack = 24 # pack * 3 bits per line
-    number_of_bits = 3 * pack + 1
+    pack = 24 # pack * 2 bits per line
+    number_of_bits = 2 * pack + 1
     ps_character_height = 14
     ps_character_width = 7
     margin = 50
@@ -42,6 +69,7 @@ def main():
     height = ps_character_width + margin
     bounding_box = {'top': 500, 'left': 800, 'width': width, 'height': height}
 
+    # get an instance of the screen shot engine
     sct = mss()
 
     stringstream = ""
@@ -73,8 +101,10 @@ def main():
         line = img_arry[int(rows / 2)]
         byte = []
         for i in range(0, number_of_bits):
+            # pixel is an array of four values: blue, green, red, alpha (=transparency); BGRA
             pixel = line[int(margin / 2 + ps_character_width / 2 + ps_character_width * i)]
-            bit = colorToBit(pixel)
+            bit = colorToBit2(pixel)
+            #print(bit)
             byte += [bit]
 
         if not calibration_done or always_monitor:
@@ -82,14 +112,14 @@ def main():
             cv2.imshow('screen', img_arry)
 
         #print("{}".format(byte[0:number_of_bits - 1]))
-        ##print("{}".format(frombits(byte[0:number_of_bits - 1], number_of_bits - 1)))
+        #print("{}".format(frombits(byte[0:number_of_bits - 1], 2)))
         characterpack = ""
         for i in range(0, pack):
-            characterpack += frombits(byte[3 * i: 3 * (i + 1)], 3)
+            characterpack += frombits(byte[2 * i: 2 * (i + 1)], 2)
         
         #print("{}, {}, {}, {}".format(characterpack, lastcharpack, clockbit, lastclockbit))
         clockbit = byte[number_of_bits - 1]
-        if lastcharpack == characterpack and clockbit == 7 and lastclockbit == 0:
+        if lastcharpack == characterpack and clockbit == "{0:x}".format(7) and lastclockbit == "{0:x}".format(0):
             calibration_done = True
             stringstream += characterpack
             print("{}".format(stringstream))
@@ -105,8 +135,6 @@ def main():
             cv2.destroyAllWindows()
             print("Done.")
             break
-
-
 
 # main program
 if __name__ == '__main__':
