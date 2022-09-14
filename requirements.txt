@@ -1,2 +1,4 @@
 opencv-python
 mss
+numpy
+Pillow
