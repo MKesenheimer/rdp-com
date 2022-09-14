@@ -21,8 +21,8 @@ def frombits(bits, nbits = 8):
 
 # main program
 def main():
-    pack = 8 # pack * 8 bits per line
-    number_of_bits = 8 * pack + 1
+    pack = 8 # number of bits packed
+    number_of_bits = 8 * pack + 1 # pack * 8 bits per line + one clock bit
     ps_character_height = 16
     ps_character_width = 12
     margin = 50
