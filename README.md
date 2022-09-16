@@ -32,7 +32,7 @@ sleep 5; cat rdp-com.ps1 | xargs -i{} xdotool type {} --delay 10
 After that, start the receiver script on the host computer.
 For example, in this case the data is read from the initial screen coordinates (200, 800):
 ```
-./receiver.py --posX 200 --posY 800
+./receiver.py --posX 200 --posY 800 --pack 24
 ```
 Position the sender console so that the colored blocks are visible in the red rectangle.
 

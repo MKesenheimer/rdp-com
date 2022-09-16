@@ -76,8 +76,8 @@ def colorToBit2(color):
     return argmin
 
 # main program
-def main(posx, posy):
-    pack = 24 # pack * 2 bits per line
+def main(posx, posy, pack):
+    # pack * 2 bits per line + one clock bit:
     number_of_bits = 2 * pack + 1
     ps_character_height = 14
     ps_character_width = 7
@@ -158,10 +158,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="")
     parser.add_argument('--posX', dest='posx', type=int, default=500, help='x-position to read the data from')
     parser.add_argument('--posY', dest='posy', type=int, default=500, help='y-position to read the data from')
+    parser.add_argument('--pack', dest='pack', type=int, default=24, help='y-position to read the data from')
     args = parser.parse_args()
 
     try:
-        main(args.posx, args.posy)
+        main(args.posx, args.posy, args.pack)
     except KeyboardInterrupt:
         print("Done.")
         cv2.destroyAllWindows()
