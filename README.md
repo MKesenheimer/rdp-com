@@ -34,4 +34,4 @@ Import-Module .\rdp-com.ps1 -force; rdp-com -delay 50 -pack 24 -path <path/to/fi
 ```
 
 ## Demonstration
-<iframe src="https://drive.google.com/file/d/1awvEpWflo1hlVaV1iR3KTR9d2eQTQkh8/preview" width="640" height="480" allow="autoplay"></iframe>
+<a href="https://drive.google.com/uc?export=view&id=1awvEpWflo1hlVaV1iR3KTR9d2eQTQkh8"><img src="https://drive.google.com/uc?export=view&id=1awvEpWflo1hlVaV1iR3KTR9d2eQTQkh8" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
