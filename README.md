@@ -8,6 +8,13 @@ This tool communicates with the host computer by displaying characters
 in different colors on the powershell console.
 The script grabs the screen content, detects the colors and converts them back into binary data.
 
+The scripts have very few dependencies.
+On the remote system only a working powershell console is required.
+No fancy packages have to be installed.
+
+However, the bit rate is not that good.
+A 5kB text file is transmitted in 45 seconds which results in about 90 Bytes per seconds.
+
 ## Prerequisites
 To met the tool's dependencies on the host computer, the following command can be issued:
 ```
