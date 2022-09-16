@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 # -*- conding: utf-8 -*-
+# receiver.py
+# Copyright September 2022, Matthias Kesenheimer
 
 import numpy as np
 import cv2
@@ -67,7 +69,7 @@ def main():
     margin = 50
     width = number_of_bits * ps_character_width + margin
     height = ps_character_width + margin
-    bounding_box = {'top': 500, 'left': 800, 'width': width, 'height': height}
+    bounding_box = {'top': 500, 'left': 2800, 'width': width, 'height': height}
 
     # get an instance of the screen shot engine
     sct = mss()

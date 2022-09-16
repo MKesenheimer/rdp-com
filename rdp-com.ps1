@@ -1,4 +1,8 @@
-# Import-Module .\rdp-com.ps1 -force; rdp-com -delay 100 -pack 8 -path <filename>
+# rdp-com.ps1
+# Copyright September 2022, Matthias Kesenheimer
+
+# Import-Module .\rdp-com.ps1 -force; rdp-com -delay 50 -pack 24 -path <filename>
+# -> 4000Bytes  / 45s =>  ~90 B/s
 
 Function Write-Bit {
 	param($bit)
