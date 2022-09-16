@@ -3,6 +3,20 @@
 # receiver.py
 # Copyright September 2022, Matthias Kesenheimer
 
+"""
+receiver script for copying data out of a rdp/citrix session.
+This tool allows to copy data from a remote system that
+has no internet access. Even if DNS requests are blocked (and
+the only way to communicate with the system is via the rdp screen), this
+tool can be used.
+This tool communicates with the host computer by displaying characters
+in different colors on the powershell console.
+The script grabs the screen content, detects the colors and converts them 
+back into binary data.
+License: GPL3
+Version: 0.7
+"""
+
 import numpy as np
 import cv2
 from mss import mss
@@ -10,6 +24,7 @@ from PIL import Image
 import sys
 import os
 import base64
+import argparse
 
 Black = [0, 0, 0, 255]
 Red = [0, 0, 255, 255]
@@ -61,7 +76,7 @@ def colorToBit2(color):
     return argmin
 
 # main program
-def main():
+def main(posx, posy):
     pack = 24 # pack * 2 bits per line
     number_of_bits = 2 * pack + 1
     ps_character_height = 14
@@ -69,7 +84,7 @@ def main():
     margin = 50
     width = number_of_bits * ps_character_width + margin
     height = ps_character_width + margin
-    bounding_box = {'top': 500, 'left': 2800, 'width': width, 'height': height}
+    bounding_box = {'top': posy, 'left': posx, 'width': width, 'height': height}
 
     # get an instance of the screen shot engine
     sct = mss()
@@ -140,8 +155,13 @@ def main():
 
 # main program
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="")
+    parser.add_argument('--posX', dest='posx', type=int, default=500, help='x-position to read the data from')
+    parser.add_argument('--posY', dest='posy', type=int, default=500, help='y-position to read the data from')
+    args = parser.parse_args()
+
     try:
-        main()
+        main(args.posx, args.posy)
     except KeyboardInterrupt:
         print("Done.")
         cv2.destroyAllWindows()
