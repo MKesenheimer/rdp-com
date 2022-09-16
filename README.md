@@ -35,4 +35,4 @@ Import-Module .\rdp-com.ps1 -force; rdp-com -delay 50 -pack 24 -path <path/to/fi
 
 ## Demonstration
 A video of the scripts in action can be found [here](https://drive.google.com/file/d/1awvEpWflo1hlVaV1iR3KTR9d2eQTQkh8/view?usp=sharing).
-![Screenshot]()
+![Screenshot](https://github.com/MKesenheimer/rdp-com/blob/master/screenshot.png)
