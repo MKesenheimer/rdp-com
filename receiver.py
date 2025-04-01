@@ -14,7 +14,7 @@ in different colors on the powershell console.
 The script grabs the screen content, detects the colors and converts them 
 back into binary data.
 License: GPL3
-Version: 0.7
+Version: 0.8
 """
 
 import numpy as np
@@ -43,6 +43,7 @@ DarkMagenta = [85, 37, 0, 255]
 DarkCyan =  [128, 128, 0, 255]
 Gray = [192, 192, 192, 255]
 Colors = [Black, Red, Green, Yellow, Blue, Magenta, Cyan, White, DarkGray, DarkRed, DarkGreen, DarkYellow, DarkBlue, DarkMagenta, DarkCyan, Gray]
+stringstream = ""
 
 def average(lst):
     return sum(lst) / len(lst)
@@ -89,6 +90,7 @@ def main(posx, posy, pack):
     # get an instance of the screen shot engine
     sct = mss()
 
+    global stringstream
     stringstream = ""
     characterpack = ""
     lastcharpack = ""
@@ -143,27 +145,27 @@ def main(posx, posy, pack):
         lastcharpack = characterpack
         lastclockbit = clockbit
 
-        if (cv2.waitKey(1) & 0xFF) == ord('q'):
-            print("Writing received data to out.bin")
-            content = base64.b64decode(stringstream)
-            with open('out.bin', 'wb') as f:
-                f.write(content)
 
-            cv2.destroyAllWindows()
-            print("Done.")
-            break
+def write_out():
+    global stringstream
+    print("Writing received data to out.bin")
+    content = base64.b64decode(stringstream)
+    with open('out.bin', 'wb') as f:
+        f.write(content)
 
 # main program
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="")
     parser.add_argument('--posX', dest='posx', type=int, default=500, help='x-position to read the data from')
     parser.add_argument('--posY', dest='posy', type=int, default=500, help='y-position to read the data from')
-    parser.add_argument('--pack', dest='pack', type=int, default=24, help='y-position to read the data from')
+    parser.add_argument('--pack', dest='pack', type=int, default=24, help='number of colored boxes per line')
     args = parser.parse_args()
 
     try:
+        print("Starting receiver. Press CTRL+C to abort and write data to file.")
         main(args.posx, args.posy, args.pack)
     except KeyboardInterrupt:
+        write_out()
         print("Done.")
         cv2.destroyAllWindows()
         try:
