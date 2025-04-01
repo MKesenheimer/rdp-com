@@ -26,7 +26,7 @@ The sender script (`rdp-com.ps1`) needs no additional software and can be run ev
 To copy data from the remote to the host computer, first the script `rdp-com.ps1` must be copied onto the remote system.
 For this, a simple Linux command can be used that automatically types the script after an initial delay of five seconds:
 ```
-sleep 5; cat rdp-com.ps1 | xargs -i{} xdotool type {} --delay 10
+sleep 5; cat rdp-com.ps1 | xargs -I{} xdotool type {} --delay 10
 ```
 
 After that, start the receiver script on the host computer.
